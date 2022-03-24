@@ -4,6 +4,10 @@
  */
 package projetodeordenacao;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,23 +20,41 @@ public class ProjetoDeOrdenacao {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        List<Item> listaItens = new ArrayList();
+    public static void main(String[] args) throws  Exception {
         
-        listaItens.add(new Item("Jogo A", "Acao",5));
-        listaItens.add(new Item("Jogo A2", "Acao",4));
-        listaItens.add(new Item("Jogo A3", "Acao",3));
-        listaItens.add(new Item("Jogo B", "Estrategia",5));
-        listaItens.add(new Item("Jogo C", "Corrida",5));
-        listaItens.add(new Item("Jogo D", "Cartas",5));
+       try{
+            List<Item> listaItens = new ArrayList();
+            
+            LerArquivoCSV(listaItens);
+            
+            OrdenarListaPorCategoria(listaItens);
         
-        OrdenarListaPorCategoria(listaItens);
+            for (int i = 0; i < listaItens.size(); i++) {
+                System.out.println("Categoria:" + listaItens.get(i).getCategoria());
+            }
         
-        for (int i = 0; i < listaItens.size(); i++) {
-            System.out.println("Categoria:" + listaItens.get(i).getCategoria());
-        }
+       }
+       catch(Exception e){
+           throw e;
+       }
+
     }
- 
+    
+    public static void LerArquivoCSV(List<Item> listaItens) throws Exception{
+        try{
+            String path = "D:/Projetos/ProjetoDeOrdenacao/src/projetodeordenacao/JogosDesordenados.csv";
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String linha = "";
+            while((linha = br.readLine()) != null){
+                String[] jogo = linha.split(",");
+                listaItens.add(new Item(jogo[0],jogo[1], Double.parseDouble(jogo[2])));
+            }
+        }
+        catch(FileNotFoundException e){
+            throw e;
+        }
+        
+    }
     public static void OrdenarListaPorCategoria(List<Item> listaItens){
         for(int i =0; i < listaItens.size();i ++){
             for(int j = i+1; j < listaItens.size(); j++){
