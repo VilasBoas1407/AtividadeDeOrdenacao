@@ -29,7 +29,7 @@ public class Item {
     }
     
     public String getCategoria(){
-        return this.Categoria;
+        return this.Categoria.trim();
     }
     
     public String getJogo(){
